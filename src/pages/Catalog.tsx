@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Link } from 'react-router-dom';
 
 // Product type definition
 interface Product {
@@ -165,7 +166,11 @@ const Catalog = () => {
             <div className="w-full md:w-3/4 lg:w-4/5">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProducts.map((product) => (
-                  <div key={product.id} className="group">
+                  <Link 
+                    to={`/product/${product.id}`} 
+                    key={product.id} 
+                    className="group"
+                  >
                     <div className="aspect-square bg-[#f8f8f8] mb-3 flex items-center justify-center overflow-hidden">
                       <img 
                         src={product.image} 
@@ -174,7 +179,7 @@ const Catalog = () => {
                       />
                     </div>
                     <h3 className="text-sm font-medium">{product.name}</h3>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
