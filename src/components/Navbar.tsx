@@ -22,23 +22,28 @@ const Navbar = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background shadow-sm py-2" : "py-4"
+        isScrolled ? "bg-background/90 backdrop-blur-sm shadow-sm py-3" : "py-6"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
         <a href="/" className="text-xl font-medium">
-          <span className="text-charcoal">Fimet</span>
+          <span className="text-charcoal">
+            <span className="inline-block mr-1">x</span>
+            <span>fimet</span>
+          </span>
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:block">
-          <ul className="flex space-x-8">
-            <li><a href="#products" className="hover:text-charcoal fancy-hover-effect">Products</a></li>
-            <li><a href="#projects" className="hover:text-charcoal fancy-hover-effect">Projects</a></li>
-            <li><a href="#information" className="hover:text-charcoal fancy-hover-effect">Information</a></li>
-            <li><a href="#news" className="hover:text-charcoal fancy-hover-effect">News</a></li>
-            <li><a href="#contact" className="hover:text-charcoal fancy-hover-effect">Contact</a></li>
-          </ul>
+        <nav className="hidden md:flex items-center space-x-8">
+          <a href="/catalog" className="hover:text-charcoal fancy-hover-effect">Catalog</a>
+          <a href="#contact" className="hover:text-charcoal fancy-hover-effect">Contact</a>
+          <button 
+            className="ml-8 text-charcoal" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            Menu
+          </button>
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -50,15 +55,22 @@ const Navbar = () => {
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Mobile Navigation Menu */}
+        {/* Full Screen Navigation Menu */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 bg-background pt-16 px-4 z-40">
-            <nav>
-              <ul className="flex flex-col space-y-6 items-center text-xl">
+          <div className="fixed inset-0 bg-cream z-40 flex items-center justify-center">
+            <button 
+              className="absolute top-6 right-6 text-charcoal" 
+              onClick={() => setIsOpen(false)}
+            >
+              <X size={28} />
+            </button>
+            
+            <nav className="text-center">
+              <ul className="flex flex-col space-y-6">
                 <li>
                   <a 
                     href="#products" 
-                    className="hover:text-charcoal" 
+                    className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Products
@@ -67,7 +79,7 @@ const Navbar = () => {
                 <li>
                   <a 
                     href="#projects" 
-                    className="hover:text-charcoal" 
+                    className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Projects
@@ -76,7 +88,7 @@ const Navbar = () => {
                 <li>
                   <a 
                     href="#information" 
-                    className="hover:text-charcoal" 
+                    className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Information
@@ -85,7 +97,7 @@ const Navbar = () => {
                 <li>
                   <a 
                     href="#news" 
-                    className="hover:text-charcoal" 
+                    className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     News
@@ -94,10 +106,19 @@ const Navbar = () => {
                 <li>
                   <a 
                     href="#contact" 
-                    className="hover:text-charcoal" 
+                    className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Contact
+                  </a>
+                </li>
+                <li className="pt-8">
+                  <a 
+                    href="/catalog" 
+                    className="text-xl hover:text-charcoal/70 transition-colors" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Catalog
                   </a>
                 </li>
               </ul>
