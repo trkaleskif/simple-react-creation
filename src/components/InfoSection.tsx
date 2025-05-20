@@ -1,22 +1,26 @@
 
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const InfoSection = () => {
   const catalogues = [
     {
-      title: "Technical",
-      image: "https://images.unsplash.com/photo-1618828272960-9403e1b85a1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80",
-      description: "Full specifications and technical details"
+      id: "modern-classic",
+      title: "Modern Classic",
+      image: "https://images.unsplash.com/photo-1585080384259-5cc08ef7f74b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
+      color: "bg-amber-700"
     },
     {
-      title: "Editions",
-      image: "https://images.unsplash.com/photo-1535359056830-d4badde79747?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80",
-      description: "Special collections and limited editions"
+      id: "inox-project",
+      title: "Inox project",
+      image: "https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
+      color: "bg-gray-400"
     },
     {
-      title: "2023",
-      image: "https://images.unsplash.com/photo-1634712282287-14ed57b9cc14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80", 
-      description: "Latest collection and new releases"
+      id: "secret",
+      title: "SECRET",
+      image: "https://images.unsplash.com/photo-1630699144339-420f59b4747a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
+      color: "bg-gray-800"
     }
   ];
 
@@ -24,33 +28,44 @@ const InfoSection = () => {
     <section id="information" className="py-16 lg:py-28">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="grid grid-cols-3 gap-4">
-            {catalogues.map((catalogue, index) => (
-              <div key={index} className="group">
-                <div className="aspect-[3/4] overflow-hidden bg-cream mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {catalogues.map((catalogue) => (
+              <div key={catalogue.id} className="flex flex-col">
+                <div className={`aspect-[3/4] ${catalogue.color} mb-4 relative group overflow-hidden`}>
                   <img 
-                    src={catalogue.image} 
-                    alt={catalogue.title} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    src={catalogue.image}
+                    alt={catalogue.title}
+                    className="w-full h-full object-cover opacity-0"
                   />
+                  <div className="absolute bottom-6 left-6">
+                    <img 
+                      src="/placeholder.svg"
+                      alt="xfimet logo" 
+                      className="h-4 w-auto"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-lg font-medium mb-1">{catalogue.title}</h3>
-                <p className="text-xs text-muted-foreground">{catalogue.description}</p>
+                <h3 className="text-lg font-medium">{catalogue.title}</h3>
               </div>
             ))}
           </div>
 
           <div className="flex flex-col justify-center">
+            <div className="mb-2 text-sm uppercase tracking-wider text-gray-500">
+              CATALOGS AND BROCHURES
+            </div>
             <h2 className="section-title">
-              Information, details and inspiration
+              Information,<br />details and<br />inspiration
             </h2>
-            <p className="text-muted-foreground mb-8">
-              Explore our catalogues, design guides, technical specifications and get inspired by our creations and collaborations with world-renowned architects and designers.
-            </p>
-            <a href="#" className="btn-primary inline-flex items-center space-x-2 w-fit">
-              <span>Download catalogues</span>
-              <ArrowRight size={16} />
-            </a>
+            <div className="mt-20">
+              <Link 
+                to="/catalogues" 
+                className="inline-flex items-center space-x-2 border border-gray-300 px-6 py-3 hover:bg-gray-100 transition-colors"
+              >
+                <span>CHECK OUT ALL THE CATALOGS</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
