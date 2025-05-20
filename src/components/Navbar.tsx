@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,17 +27,17 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
-        <a href="/" className="text-xl font-medium">
+        <Link to="/" className="text-xl font-medium">
           <span className="text-charcoal">
             <span className="inline-block mr-1">x</span>
             <span>fimet</span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="/catalog" className="hover:text-charcoal fancy-hover-effect">Catalog</a>
-          <a href="#contact" className="hover:text-charcoal fancy-hover-effect">Contact</a>
+          <Link to="/catalog" className="hover:text-charcoal fancy-hover-effect">Catalog</Link>
+          <Link to="#contact" className="hover:text-charcoal fancy-hover-effect">Contact</Link>
           <button 
             className="ml-8 text-charcoal" 
             onClick={() => setIsOpen(!isOpen)}
@@ -68,58 +69,58 @@ const Navbar = () => {
             <nav className="text-center">
               <ul className="flex flex-col space-y-6">
                 <li>
-                  <a 
-                    href="#products" 
+                  <Link
+                    to="#products" 
                     className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Products
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a 
-                    href="#projects" 
+                  <Link
+                    to="#projects" 
                     className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Projects
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a 
-                    href="#information" 
+                  <Link
+                    to="#information" 
                     className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Information
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a 
-                    href="#news" 
+                  <Link
+                    to="#news" 
                     className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     News
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a 
-                    href="#contact" 
+                  <Link
+                    to="#contact" 
                     className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li className="pt-8">
-                  <a 
-                    href="/catalog" 
+                  <Link
+                    to="/catalog" 
                     className="text-xl hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
                     Catalog
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

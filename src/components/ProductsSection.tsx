@@ -1,5 +1,6 @@
 
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ProductsSection = () => {
   return (
@@ -22,10 +23,10 @@ const ProductsSection = () => {
               <p className="text-muted-foreground mb-6">
                 Every product is the result of meticulous research and Italian craftsmanship, creating a perfect blend of form and function.
               </p>
-              <a href="#" className="inline-flex items-center space-x-2 btn-outline mt-4">
+              <Link to="/catalog" className="inline-flex items-center space-x-2 btn-outline mt-4">
                 <span>View all products</span>
                 <ArrowRight size={16} />
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -34,9 +35,9 @@ const ProductsSection = () => {
                 <p className="text-sm text-muted-foreground mb-4">
                   Elegant and functional door handles crafted with precision
                 </p>
-                <a href="#" className="text-sm fancy-hover-effect inline-block">
+                <Link to="/catalog" className="text-sm fancy-hover-effect inline-block">
                   Discover more
-                </a>
+                </Link>
               </div>
               
               <div>
@@ -44,9 +45,9 @@ const ProductsSection = () => {
                 <p className="text-sm text-muted-foreground mb-4">
                   Carefully designed elements for a sophisticated bathroom
                 </p>
-                <a href="#" className="text-sm fancy-hover-effect inline-block">
+                <Link to="/catalog" className="text-sm fancy-hover-effect inline-block">
                   Discover more
-                </a>
+                </Link>
               </div>
             </div>
           </div>
