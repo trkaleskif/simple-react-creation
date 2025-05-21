@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -39,6 +39,12 @@ const Navbar = () => {
           <Link to="/catalog" className="hover:text-charcoal fancy-hover-effect">Catalog</Link>
           <Link to="/events" className="hover:text-charcoal fancy-hover-effect">Events</Link>
           <Link to="/contact" className="hover:text-charcoal fancy-hover-effect">Contact</Link>
+          <Link to="/signin" className="hover:text-charcoal fancy-hover-effect flex items-center">
+            <LogIn size={18} className="mr-1" /> Sign In
+          </Link>
+          <Link to="/signup" className="hover:text-charcoal fancy-hover-effect flex items-center">
+            <UserPlus size={18} className="mr-1" /> Sign Up
+          </Link>
           <button 
             className="ml-8 text-charcoal" 
             onClick={() => setIsOpen(!isOpen)}
@@ -139,6 +145,24 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     Catalogues
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/signin" 
+                    className="text-xl hover:text-charcoal/70 transition-colors flex items-center justify-center" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LogIn size={18} className="mr-1" /> Sign In
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/signup" 
+                    className="text-xl hover:text-charcoal/70 transition-colors flex items-center justify-center" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <UserPlus size={18} className="mr-1" /> Sign Up
                   </Link>
                 </li>
               </ul>

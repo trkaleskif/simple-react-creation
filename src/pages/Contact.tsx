@@ -29,8 +29,8 @@ const formSchema = z.object({
   phone: z.string().optional(),
   requestType: z.string().min(1, { message: "Please select a request type" }),
   message: z.string().min(10, { message: "Message must be at least 10 characters" }),
-  privacyConsent: z.literal(true, {
-    errorMap: () => ({ message: "You must accept the privacy policy" }),
+  privacyConsent: z.boolean().refine(val => val === true, {
+    message: "You must accept the privacy policy"
   }),
 });
 
@@ -212,7 +212,9 @@ const Contact = () => {
                       <FormControl>
                         <Checkbox
                           checked={field.value}
-                          onCheckedChange={field.onChange}
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked === true);
+                          }}
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
