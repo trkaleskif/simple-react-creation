@@ -1,74 +1,54 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, UserPlus } from "lucide-react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-const formSchema = z.object({
-  firstName: z.string().min(2, { message: "First name is required" }),
-  lastName: z.string().min(2, { message: "Last name is required" }),
-  company: z.string().optional(),
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-  confirmPassword: z.string(),
-  privacyConsent: z.literal(true, {
-    errorMap: () => ({ message: "You must accept the privacy policy" }),
-  }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
+const SignUpSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, "First name is too short")
+    .required("First name is required"),
+  lastName: Yup.string()
+    .min(2, "Last name is too short")
+    .required("Last name is required"),
+  company: Yup.string(),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
+  privacyConsent: Yup.boolean()
+    .oneOf([true], "You must accept the privacy policy")
+    .required("Privacy consent is required"),
 });
-
-type SignUpFormValues = z.infer<typeof formSchema>;
 
 const SignUp = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      company: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      privacyConsent: false as unknown as true,
-    },
-  });
-
-  function onSubmit(data: SignUpFormValues) {
+  const handleSubmit = (values: any) => {
     setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
-      console.log(data);
+      console.log(values);
       toast({
         title: "Account created!",
         description: "Welcome to Fimet.",
       });
       setIsLoading(false);
-      form.reset();
     }, 1000);
-  }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -86,159 +66,162 @@ const SignUp = () => {
               </p>
             </div>
             
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="First name" {...field} disabled={isLoading} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+            <Formik
+              initialValues={{
+                firstName: "",
+                lastName: "",
+                company: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                privacyConsent: false,
+              }}
+              validationSchema={SignUpSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ errors, touched }) => (
+                <Form className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                        First Name
+                      </label>
+                      <Field
+                        id="firstName"
+                        name="firstName"
+                        placeholder="First name"
+                        className={`w-full border ${
+                          errors.firstName && touched.firstName ? 'border-red-500' : 'border-gray-300'
+                        } rounded px-4 py-2`}
+                        disabled={isLoading}
+                      />
+                      <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                        Last Name
+                      </label>
+                      <Field
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Last name"
+                        className={`w-full border ${
+                          errors.lastName && touched.lastName ? 'border-red-500' : 'border-gray-300'
+                        } rounded px-4 py-2`}
+                        disabled={isLoading}
+                      />
+                      <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                  </div>
                   
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Last name" {...field} disabled={isLoading} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <FormField
-                  control={form.control}
-                  name="company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company (Optional)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Company name" {...field} disabled={isLoading} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="your@email.com" 
-                          type="email" 
-                          {...field}
-                          disabled={isLoading}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Create password" 
-                            type="password" 
-                            {...field}
-                            disabled={isLoading}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+                      Company (Optional)
+                    </label>
+                    <Field
+                      id="company"
+                      name="company"
+                      placeholder="Company name"
+                      className="w-full border border-gray-300 rounded px-4 py-2"
+                      disabled={isLoading}
+                    />
+                  </div>
                   
-                  <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Confirm password" 
-                            type="password" 
-                            {...field}
-                            disabled={isLoading}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email
+                    </label>
+                    <Field
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="your@email.com"
+                      className={`w-full border ${
+                        errors.email && touched.email ? 'border-red-500' : 'border-gray-300'
+                      } rounded px-4 py-2`}
+                      disabled={isLoading}
+                    />
+                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                        Password
+                      </label>
+                      <Field
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Create password"
+                        className={`w-full border ${
+                          errors.password && touched.password ? 'border-red-500' : 'border-gray-300'
+                        } rounded px-4 py-2`}
+                        disabled={isLoading}
+                      />
+                      <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                        Confirm Password
+                      </label>
+                      <Field
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm password"
+                        className={`w-full border ${
+                          errors.confirmPassword && touched.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                        } rounded px-4 py-2`}
+                        disabled={isLoading}
+                      />
+                      <ErrorMessage name="confirmPassword" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-row items-start space-x-3">
+                    <Field
+                      id="privacyConsent"
+                      name="privacyConsent"
+                      type="checkbox"
+                      className="mt-1"
+                      disabled={isLoading}
+                    />
+                    <div className="space-y-1">
+                      <label htmlFor="privacyConsent" className="text-sm font-normal">
+                        I consent to the processing of data as per the <a href="#" className="underline">Privacy Policy</a>
+                      </label>
+                      <ErrorMessage name="privacyConsent" component="div" className="text-red-500 text-sm" />
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-ebony text-white hover:bg-black"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      "Creating account..."
+                    ) : (
+                      <>
+                        Create Account <UserPlus className="ml-2" size={16} />
+                      </>
                     )}
-                  />
-                </div>
-                
-                <FormField
-                  control={form.control}
-                  name="privacyConsent"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={(checked) => {
-                            field.onChange(checked === true);
-                          }}
-                          disabled={isLoading}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-sm font-normal">
-                          I consent to the processing of data as per the <a href="#" className="underline">Privacy Policy</a>
-                        </FormLabel>
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                
-                <Button 
-                  type="submit" 
-                  className="w-full bg-ebony text-white hover:bg-black"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    "Creating account..."
-                  ) : (
-                    <>
-                      Create Account <UserPlus className="ml-2" size={16} />
-                    </>
-                  )}
-                </Button>
-                
-                <div className="text-center mt-6">
-                  <p className="text-gray-500">
-                    Already have an account?{" "}
-                    <Link to="/signin" className="text-black hover:underline">
-                      Sign in
-                    </Link>
-                  </p>
-                </div>
-              </form>
-            </Form>
+                  </Button>
+                  
+                  <div className="text-center mt-6">
+                    <p className="text-gray-500">
+                      Already have an account?{" "}
+                      <Link to="/signin" className="text-black hover:underline">
+                        Sign in
+                      </Link>
+                    </p>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </div>
         </section>
       </main>

@@ -1,11 +1,15 @@
-
 import { useState, useEffect } from 'react';
-import { Menu, X, LogIn, UserPlus } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { toggleCart } from '@/redux/features/cart/cartSlice';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector(state => state.cart.items);
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +23,11 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(toggleCart());
+  };
 
   return (
     <header 
@@ -46,6 +55,18 @@ const Navbar = () => {
             <UserPlus size={18} className="mr-1" /> Sign Up
           </Link>
           <button 
+            onClick={handleCartClick}
+            className="relative hover:text-charcoal fancy-hover-effect flex items-center"
+            aria-label="Cart"
+          >
+            <ShoppingCart size={18} className="mr-1" />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
+          <button 
             className="ml-8 text-charcoal" 
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
@@ -55,13 +76,27 @@ const Navbar = () => {
         </nav>
 
         {/* Mobile Navigation Toggle */}
-        <button 
-          className="md:hidden text-charcoal" 
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center">
+          <button 
+            onClick={handleCartClick}
+            className="relative hover:text-charcoal mr-4"
+            aria-label="Cart"
+          >
+            <ShoppingCart size={20} />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
+          <button
+            className="text-charcoal" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
 
         {/* Full Screen Navigation Menu */}
         {isOpen && (
@@ -145,6 +180,15 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     Catalogues
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/cart" 
+                    className="text-xl hover:text-charcoal/70 transition-colors flex items-center justify-center" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <ShoppingCart size={18} className="mr-1" /> Cart
                   </Link>
                 </li>
                 <li>
