@@ -677,10 +677,10 @@ const Checkout = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-sm font-medium">{item.name}</h3>
-                      <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                      <p className="text-sm text-gray-500">${Number(item.price).toFixed(2)}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="font-medium">${Number(item.price * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
@@ -688,7 +688,7 @@ const Checkout = () => {
                 <div className="border-t pt-4 mt-4 space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>${Number(subtotal).toFixed(2)}</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -704,7 +704,7 @@ const Checkout = () => {
                   
                   <div className="flex justify-between font-medium pt-2 border-t">
                     <span>TOTAL</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>${Number(total).toFixed(2)}</span>
                   </div>
                 </div>
 
