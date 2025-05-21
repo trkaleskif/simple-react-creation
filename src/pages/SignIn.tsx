@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { login, clearError } from "@/redux/features/auth/authSlice";
 
 import {
   Form,
@@ -29,7 +31,10 @@ type SignInFormValues = z.infer<typeof formSchema>;
 
 const SignIn = () => {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
+  const { isLoading, error, isAuthenticated } = useAppSelector(state => state.auth);
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(formSchema),
@@ -39,19 +44,32 @@ const SignIn = () => {
     },
   });
 
-  function onSubmit(data: SignInFormValues) {
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log(data);
+  // Show error toast if there's an error from Redux
+  if (error) {
+    toast({
+      title: "Sign in failed",
+      description: error,
+      variant: "destructive"
+    });
+    dispatch(clearError());
+  }
+
+  // Redirect if authenticated
+  if (isAuthenticated) {
+    navigate('/');
+  }
+
+  async function onSubmit(data: SignInFormValues) {
+    try {
+      await dispatch(login(data)).unwrap();
       toast({
         title: "Sign in successful!",
         description: "Welcome back to Fimet.",
       });
-      setIsLoading(false);
       form.reset();
-    }, 1000);
+    } catch (error) {
+      // Error is handled in the Redux slice
+    }
   }
 
   return (
