@@ -37,7 +37,8 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link to="/catalog" className="hover:text-charcoal fancy-hover-effect">Catalog</Link>
-          <Link to="#contact" className="hover:text-charcoal fancy-hover-effect">Contact</Link>
+          <Link to="/events" className="hover:text-charcoal fancy-hover-effect">Events</Link>
+          <Link to="/contact" className="hover:text-charcoal fancy-hover-effect">Contact</Link>
           <button 
             className="ml-8 text-charcoal" 
             onClick={() => setIsOpen(!isOpen)}
@@ -106,7 +107,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <Link
-                    to="#contact" 
+                    to="/contact" 
                     className="text-3xl md:text-5xl font-light tracking-tight hover:text-charcoal/70 transition-colors" 
                     onClick={() => setIsOpen(false)}
                   >
@@ -120,6 +121,24 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     Catalog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/events" 
+                    className="text-xl hover:text-charcoal/70 transition-colors" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Events
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/catalogues" 
+                    className="text-xl hover:text-charcoal/70 transition-colors" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Catalogues
                   </Link>
                 </li>
               </ul>

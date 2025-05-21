@@ -1,4 +1,6 @@
 
+import { Link } from "react-router-dom";
+
 const ContactSection = () => {
   return (
     <section id="contact" className="py-20 bg-ebony text-white">
@@ -26,35 +28,12 @@ const ContactSection = () => {
             <p className="text-gray-400 mb-12">
               For each architecture project, a solution. Discover how we can help make your vision come to life.
             </p>
-            <form className="w-full max-w-md">
-              <div className="mb-6">
-                <input 
-                  type="text" 
-                  placeholder="Your name" 
-                  className="w-full py-3 px-4 bg-transparent border-b border-gray-700 focus:border-white outline-none transition-colors"
-                />
-              </div>
-              <div className="mb-6">
-                <input 
-                  type="email" 
-                  placeholder="Your email" 
-                  className="w-full py-3 px-4 bg-transparent border-b border-gray-700 focus:border-white outline-none transition-colors"
-                />
-              </div>
-              <div className="mb-6">
-                <textarea 
-                  placeholder="Your message" 
-                  rows={3}
-                  className="w-full py-3 px-4 bg-transparent border-b border-gray-700 focus:border-white outline-none transition-colors"
-                ></textarea>
-              </div>
-              <button 
-                type="submit" 
-                className="w-full py-3 border border-white hover:bg-white hover:text-ebony transition-colors"
-              >
-                Send message
-              </button>
-            </form>
+            <Link 
+              to="/contact"
+              className="py-3 px-6 border border-white hover:bg-white hover:text-ebony transition-colors"
+            >
+              Contact us for more information
+            </Link>
           </div>
         </div>
       </div>
