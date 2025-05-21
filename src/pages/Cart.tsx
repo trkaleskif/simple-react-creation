@@ -1,224 +1,155 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Trash2, ShoppingCart } from "lucide-react";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ShoppingCart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { removeFromCart, updateQuantity, clearCart } from "@/redux/features/cart/cartSlice";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getCartItems } from "@/redux/features/cart/cartSlice";
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { items } = useAppSelector((state) => state.cart);
-  const [couponCode, setCouponCode] = useState("");
+  const { cartItems, isLoading, error } = useAppSelector(state => state.cart);
+  const shipping = 5;
+  const discount = 0;
 
-  // Calculate cart totals
-  const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shipping = 0; // We could calculate this based on user location, product weight, etc.
-  const total = subtotal + shipping;
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, [dispatch]);
 
-  const handleRemoveItem = (id: string) => {
-    dispatch(removeFromCart(id));
+  const calculateTotal = (items: any[]) => {
+    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    return total;
   };
 
-  const handleUpdateQuantity = (id: string, quantity: number) => {
-    if (quantity < 1) return;
-    dispatch(updateQuantity({ id, quantity }));
-  };
+  if (isLoading) {
+    return <div>Loading cart...</div>;
+  }
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
-
-  const handleCheckout = () => {
-    navigate("/checkout");
-  };
-
-  const handleContinueShopping = () => {
-    navigate("/catalog");
-  };
-
-  const handleApplyCoupon = () => {
-    // Implementation for coupon application would go here
-    console.log("Applying coupon:", couponCode);
-  };
-
-  if (items.length === 0) {
-    return (
-      <div className="min-h-screen bg-white">
-        <Navbar />
-        <main className="pt-24 pb-16">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-light text-center mb-8">Shopping Cart</h1>
-            <div className="flex flex-col items-center justify-center py-16 border">
-              <ShoppingCart className="h-16 w-16 text-gray-300 mb-4" />
-              <p className="text-xl text-gray-500 mb-6">Your cart is empty</p>
-              <Button 
-                onClick={handleContinueShopping}
-                className="bg-ebony text-white hover:bg-black"
-              >
-                CONTINUE SHOPPING
-              </Button>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
+  if (error) {
+    return <div>Error loading cart: {error}</div>;
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
       
-      <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-light text-center mb-8">Shopping Cart</h1>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="py-4 text-left font-medium">Product</th>
-                      <th className="py-4 text-center font-medium">Quantity</th>
-                      <th className="py-4 text-right font-medium">Subtotal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {items.map((item) => (
-                      <tr key={item.id} className="border-b">
-                        <td className="py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="h-20 w-20 bg-gray-100 rounded overflow-hidden">
-                              <img 
-                                src={item.image} 
-                                alt={item.name} 
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-                            <div>
-                              <h3 className="font-medium">{item.name}</h3>
-                              <p className="text-sm text-gray-500">${Number(item.price).toFixed(2)}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="py-4">
-                          <div className="flex items-center justify-center">
-                            <button 
-                              onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                              className="w-8 h-8 flex items-center justify-center border"
-                            >
-                              -
-                            </button>
-                            <div className="w-12 h-8 flex items-center justify-center border-t border-b">
-                              {item.quantity}
-                            </div>
-                            <button 
-                              onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                              className="w-8 h-8 flex items-center justify-center border"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </td>
-                        <td className="py-4 text-right">
-                          <div className="flex items-center justify-end space-x-4">
-                            <span className="font-medium">
-                              ${Number(item.price * item.quantity).toFixed(2)}
-                            </span>
-                            <button 
-                              onClick={() => handleRemoveItem(item.id)}
-                              className="text-gray-500 hover:text-red-500"
-                              aria-label="Remove item"
-                            >
-                              <Trash2 size={18} />
-                            </button>
-                          </div>
-                        </td>
+      <main className="flex-1 pt-24 pb-16">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h1 className="text-3xl font-light tracking-tight mb-8">Shopping Cart</h1>
+          
+          {cartItems.length > 0 ? (
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="flex-1">
+                <div className="border rounded-md overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 text-left">
+                      <tr>
+                        <th className="px-6 py-4 text-sm font-medium text-gray-500">Product</th>
+                        <th className="px-6 py-4 text-sm font-medium text-gray-500">Quantity</th>
+                        <th className="px-6 py-4 text-sm font-medium text-gray-500 text-right">Price</th>
+                        <th className="px-6 py-4 text-sm font-medium text-gray-500 text-right">Total</th>
+                        <th className="px-6 py-4 sr-only">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y">
+                      {cartItems.map(item => (
+                        <tr key={item.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                <img
+                                  src={item.image}
+                                  alt={item.name}
+                                  className="h-full w-full object-cover object-center"
+                                />
+                              </div>
+                              <div className="ml-4">
+                                <Link to={`/product/${item.id}`} className="font-medium text-gray-900 hover:text-gray-600">
+                                  {item.name}
+                                </Link>
+                                <p className="text-gray-500 text-sm">{item.description}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500">{item.quantity}</div>
+                          </td>
+                          <td className="px-6 py-4 text-right whitespace-nowrap">
+                            <div className="text-sm text-gray-500">€{item.price}</div>
+                          </td>
+                          <td className="px-6 py-4 text-right whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">€{(item.price * item.quantity).toFixed(2)}</div>
+                          </td>
+                          <td className="px-6 py-4 text-right whitespace-nowrap">
+                            <div className="relative inline-flex">
+                              <button
+                                type="button"
+                                className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-md text-xs font-semibold text-gray-500 hover:bg-gray-100"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
               
-              <div className="flex justify-between items-center mt-6">
-                <Button 
-                  onClick={handleClearCart}
-                  variant="outline"
-                  className="text-sm"
-                >
-                  CLEAR CART
-                </Button>
-                <Button 
-                  onClick={handleContinueShopping}
-                  variant="outline"
-                  className="text-sm"
-                >
-                  CONTINUE SHOPPING
-                </Button>
-              </div>
-            </div>
-            
-            <div className="lg:col-span-1">
-              <div className="border p-6">
-                <h2 className="text-xl font-medium mb-4">Cart Summary</h2>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Subtotal</span>
-                    <span>${Number(subtotal).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Shipping</span>
-                    <span>{shipping === 0 ? "Calculated at checkout" : `$${shipping.toFixed(2)}`}</span>
-                  </div>
-                </div>
-                
-                <div className="my-4 border-t border-b py-4">
-                  <div className="flex justify-between font-medium">
-                    <span>Total</span>
-                    <span>${Number(total).toFixed(2)}</span>
-                  </div>
-                </div>
-                
-                <div className="mt-6 space-y-4">
-                  <div className="space-y-2">
-                    <label htmlFor="coupon" className="text-sm font-medium">
-                      Apply Discount Code
-                    </label>
-                    <div className="flex">
-                      <Input 
-                        id="coupon"
-                        value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value)}
-                        className="rounded-r-none"
-                        placeholder="Coupon code"
-                      />
-                      <Button 
-                        onClick={handleApplyCoupon}
-                        className="rounded-l-none"
-                        variant="outline"
-                      >
-                        Apply
-                      </Button>
+              <div className="w-full lg:w-96">
+                <div className="bg-gray-50 rounded-md p-6">
+                  <h2 className="text-xl font-medium mb-4">Order Summary</h2>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Subtotal</span>
+                      <span>€{calculateTotal(cartItems).toFixed(2)}</span>
                     </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Shipping</span>
+                      <span>{shipping > 0 ? `€${shipping.toFixed(2)}` : 'Free'}</span>
+                    </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between text-sm text-green-600">
+                        <span>Discount</span>
+                        <span>-€{discount.toFixed(2)}</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="border-t pt-4 mb-6">
+                    <div className="flex justify-between font-medium">
+                      <span>Total</span>
+                      <span className="text-xl">€{(calculateTotal(cartItems) + shipping - discount).toFixed(2)}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Including VAT</p>
                   </div>
                   
                   <Button 
-                    onClick={handleCheckout}
-                    className="w-full bg-ebony text-white hover:bg-black"
+                    onClick={() => navigate('/checkout')}
+                    className="w-full bg-black text-white hover:bg-gray-800"
                   >
-                    PROCEED TO CHECKOUT
+                    Proceed to Checkout <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-center py-16">
+              <ShoppingCart className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+              <h2 className="text-2xl font-medium mb-2">Your cart is empty</h2>
+              <p className="text-gray-500 mb-8">Browse our products to add items to your cart</p>
+              <Button 
+                onClick={() => navigate('/catalog')}
+                className="bg-black text-white hover:bg-gray-800"
+              >
+                Browse Products
+              </Button>
+            </div>
+          )}
         </div>
       </main>
 
