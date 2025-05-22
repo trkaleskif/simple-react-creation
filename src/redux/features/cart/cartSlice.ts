@@ -1,5 +1,5 @@
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 export interface CartItem {
   id: string;
@@ -7,17 +7,57 @@ export interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  description?: string;
 }
 
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: CartState = {
   items: [],
-  isOpen: false
+  isOpen: false,
+  isLoading: false,
+  error: null
 };
+
+// Create async thunk for fetching cart items
+export const getCartItems = createAsyncThunk(
+  'cart/getCartItems',
+  async (_, { rejectWithValue }) => {
+    try {
+      // Simulating API call with mock data
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Mock cart items
+      const items: CartItem[] = [
+        {
+          id: '1',
+          name: 'Modern Chair',
+          price: 199.00,
+          quantity: 1,
+          image: '/placeholder.svg',
+          description: 'Comfortable modern chair'
+        },
+        {
+          id: '2',
+          name: 'Minimal Desk',
+          price: 349.00,
+          quantity: 2,
+          image: '/placeholder.svg',
+          description: 'Sleek minimal desk'
+        }
+      ];
+      
+      return items;
+    } catch (error) {
+      return rejectWithValue('Failed to fetch cart items');
+    }
+  }
+);
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -53,6 +93,21 @@ export const cartSlice = createSlice({
     toggleCart: (state) => {
       state.isOpen = !state.isOpen;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      });
   }
 });
 

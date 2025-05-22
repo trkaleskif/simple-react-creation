@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, ArrowRight } from "lucide-react";
@@ -5,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getCartItems } from "@/redux/features/cart/cartSlice";
+import { getCartItems, removeFromCart, updateQuantity } from "@/redux/features/cart/cartSlice";
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { cartItems, isLoading, error } = useAppSelector(state => state.cart);
+  const { items: cartItems, isLoading, error } = useAppSelector(state => state.cart);
   const shipping = 5;
   const discount = 0;
 
@@ -21,6 +22,18 @@ const Cart = () => {
   const calculateTotal = (items: any[]) => {
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     return total;
+  };
+
+  const handleRemoveItem = (itemId: string) => {
+    dispatch(removeFromCart(itemId));
+  };
+
+  const handleQuantityChange = (itemId: string, quantity: number) => {
+    if (quantity > 0) {
+      dispatch(updateQuantity({ id: itemId, quantity }));
+    } else {
+      dispatch(removeFromCart(itemId));
+    }
   };
 
   if (isLoading) {
@@ -74,10 +87,24 @@ const Cart = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{item.quantity}</div>
+                            <div className="flex items-center">
+                              <button 
+                                className="text-gray-500 hover:text-gray-700 p-1"
+                                onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                              >
+                                -
+                              </button>
+                              <div className="mx-2 text-sm text-gray-500">{item.quantity}</div>
+                              <button 
+                                className="text-gray-500 hover:text-gray-700 p-1"
+                                onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                              >
+                                +
+                              </button>
+                            </div>
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap">
-                            <div className="text-sm text-gray-500">€{item.price}</div>
+                            <div className="text-sm text-gray-500">€{item.price.toFixed(2)}</div>
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">€{(item.price * item.quantity).toFixed(2)}</div>
@@ -86,6 +113,7 @@ const Cart = () => {
                             <div className="relative inline-flex">
                               <button
                                 type="button"
+                                onClick={() => handleRemoveItem(item.id)}
                                 className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-md text-xs font-semibold text-gray-500 hover:bg-gray-100"
                               >
                                 Remove
