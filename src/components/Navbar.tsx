@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
-import { Menu, X, LogIn, UserPlus, ShoppingCart } from 'lucide-react';
+import { Menu, X, LogIn, UserPlus, ShoppingCart, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { toggleCart } from '@/redux/features/cart/cartSlice';
+import { toggleWishlist } from '@/redux/features/wishlist/wishlistSlice';
 import { Badge } from '@/components/ui/badge';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -11,8 +13,13 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const dispatch = useAppDispatch();
+  
   const cartItems = useAppSelector(state => state.cart.items);
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const totalCartItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  
+  const wishlistItems = useAppSelector(state => state.wishlist.items);
+  const totalWishlistItems = wishlistItems.length;
+  
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -31,6 +38,11 @@ const Navbar = () => {
   const handleCartClick = (e: React.MouseEvent) => {
     e.preventDefault();
     dispatch(toggleCart());
+  };
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(toggleWishlist());
   };
 
   return (
@@ -60,16 +72,30 @@ const Navbar = () => {
           </Link>
           <LanguageSwitcher />
           <button 
+            onClick={handleWishlistClick}
+            className="relative hover:text-charcoal fancy-hover-effect flex items-center"
+            aria-label="Wishlist"
+          >
+            <Heart size={18} className="mr-1" /> {t('wishlist.title')}
+            {totalWishlistItems > 0 && (
+              <Badge 
+                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
+              >
+                {totalWishlistItems}
+              </Badge>
+            )}
+          </button>
+          <button 
             onClick={handleCartClick}
             className="relative hover:text-charcoal fancy-hover-effect flex items-center"
             aria-label="Cart"
           >
             <ShoppingCart size={18} className="mr-1" /> {t('navbar.cart')}
-            {totalItems > 0 && (
+            {totalCartItems > 0 && (
               <Badge 
                 className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
               >
-                {totalItems}
+                {totalCartItems}
               </Badge>
             )}
           </button>
@@ -86,16 +112,30 @@ const Navbar = () => {
         <div className="md:hidden flex items-center">
           <LanguageSwitcher />
           <button 
-            onClick={handleCartClick}
+            onClick={handleWishlistClick}
             className="relative hover:text-charcoal mr-4 ml-4"
-            aria-label="Cart"
+            aria-label="Wishlist"
           >
-            <ShoppingCart size={20} />
-            {totalItems > 0 && (
+            <Heart size={20} />
+            {totalWishlistItems > 0 && (
               <Badge 
                 className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
               >
-                {totalItems}
+                {totalWishlistItems}
+              </Badge>
+            )}
+          </button>
+          <button 
+            onClick={handleCartClick}
+            className="relative hover:text-charcoal mr-4"
+            aria-label="Cart"
+          >
+            <ShoppingCart size={20} />
+            {totalCartItems > 0 && (
+              <Badge 
+                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
+              >
+                {totalCartItems}
               </Badge>
             )}
           </button>
@@ -190,6 +230,15 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     Catalogues
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/wishlist" 
+                    className="text-xl hover:text-charcoal/70 transition-colors flex items-center justify-center" 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Heart size={18} className="mr-1" /> Wishlist
                   </Link>
                 </li>
                 <li>

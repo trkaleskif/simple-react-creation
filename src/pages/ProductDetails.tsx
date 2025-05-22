@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, ShoppingCart, Heart, Plus, Minus } from 'lucide-react';
@@ -15,8 +14,10 @@ import {
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { toast } from '@/hooks/use-toast';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addToCart } from '@/redux/features/cart/cartSlice';
+import { addToWishlist, removeFromWishlist } from '@/redux/features/wishlist/wishlistSlice';
+import { useTranslation } from 'react-i18next';
 
 // Mock product database with details
 const productsDatabase = [
@@ -87,12 +88,17 @@ const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   
   // Find the product with the matching ID
   const product = productsDatabase.find(p => p.id === id) || productsDatabase[0];
   
   // Get related products
   const relatedProducts = getRelatedProducts(product.id, product.category);
+  
+  // Check if product is in wishlist
+  const wishlistItems = useAppSelector(state => state.wishlist.items);
+  const isInWishlist = wishlistItems.some(item => item.id === product.id);
 
   const handleAddToCart = () => {
     dispatch(addToCart({
@@ -105,16 +111,31 @@ const ProductDetails = () => {
     }));
     
     toast({
-      title: "Added to cart",
-      description: `${quantity} × ${product.name} added to your cart`,
+      title: t('cart.added'),
+      description: `${quantity} × ${product.name} ${t('cart.addedDesc')}`,
     });
   };
 
-  const addToWishlist = () => {
-    toast({
-      title: "Added to wishlist",
-      description: `${product.name} has been added to your wishlist`,
-    });
+  const toggleWishlist = () => {
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(product.id));
+      toast({
+        title: t('wishlist.itemRemoved'),
+        description: `${product.name} ${t('wishlist.removedDesc')}`,
+      });
+    } else {
+      dispatch(addToWishlist({
+        id: product.id,
+        name: product.name,
+        price: Number(product.price) || 0,
+        image: product.image,
+        description: product.description
+      }));
+      toast({
+        title: t('wishlist.itemAdded'),
+        description: `${product.name} ${t('wishlist.addedDesc')}`,
+      });
+    }
   };
 
   return (
@@ -127,7 +148,7 @@ const ProductDetails = () => {
           <div className="mb-6">
             <Link to="/catalog" className="text-sm text-gray-500 flex items-center hover:text-gray-700">
               <ChevronLeft size={16} className="mr-1" />
-              Back to catalog
+              {t('product.backToCatalog')}
             </Link>
           </div>
 
@@ -175,7 +196,7 @@ const ProductDetails = () => {
               {/* Color selection */}
               {product.colors && (
                 <div className="mb-8">
-                  <div className="text-sm font-medium mb-2">Available Colors</div>
+                  <div className="text-sm font-medium mb-2">{t('product.availableColors')}</div>
                   <div className="flex space-x-3">
                     {product.colors.map((color, index) => (
                       <div 
@@ -197,7 +218,7 @@ const ProductDetails = () => {
 
               {/* Quantity selector */}
               <div className="mb-8">
-                <div className="text-sm font-medium mb-2">Quantity</div>
+                <div className="text-sm font-medium mb-2">{t('product.quantity')}</div>
                 <div className="flex items-center">
                   <Button 
                     variant="outline" 
@@ -225,15 +246,15 @@ const ProductDetails = () => {
                   onClick={handleAddToCart}
                 >
                   <ShoppingCart size={18} className="mr-2" />
-                  Add to cart
+                  {t('product.addToCart')}
                 </Button>
                 <Button 
-                  variant="outline" 
-                  className="flex-1"
-                  onClick={addToWishlist}
+                  variant={isInWishlist ? "default" : "outline"}
+                  className={`flex-1 ${isInWishlist ? "bg-red-500 hover:bg-red-600" : ""}`}
+                  onClick={toggleWishlist}
                 >
                   <Heart size={18} className="mr-2" />
-                  Add to wishlist
+                  {isInWishlist ? t('product.removeFromWishlist') : t('product.addToWishlist')}
                 </Button>
               </div>
 
@@ -241,20 +262,20 @@ const ProductDetails = () => {
               <div className="border-t border-gray-200 mt-8 pt-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <div className="text-sm font-medium mb-1">Material</div>
+                    <div className="text-sm font-medium mb-1">{t('product.material')}</div>
                     <div className="text-sm text-gray-600">{product.material || "Aluminum/Stainless Steel"}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium mb-1">Finish</div>
+                    <div className="text-sm font-medium mb-1">{t('product.finish')}</div>
                     <div className="text-sm text-gray-600">{product.finish || "Brushed/Polished"}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium mb-1">Warranty</div>
+                    <div className="text-sm font-medium mb-1">{t('product.warranty')}</div>
                     <div className="text-sm text-gray-600">{product.warranty || "5 years"}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium mb-1">Availability</div>
-                    <div className="text-sm text-green-600">In Stock</div>
+                    <div className="text-sm font-medium mb-1">{t('product.availability')}</div>
+                    <div className="text-sm text-green-600">{t('product.inStock')}</div>
                   </div>
                 </div>
               </div>
