@@ -15,6 +15,8 @@ import {
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { toast } from '@/hooks/use-toast';
+import { useAppDispatch } from '@/redux/hooks';
+import { addToCart } from '@/redux/features/cart/cartSlice';
 
 // Mock product database with details
 const productsDatabase = [
@@ -84,6 +86,7 @@ const getRelatedProducts = (currentId: string, category: string) => {
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useAppDispatch();
   
   // Find the product with the matching ID
   const product = productsDatabase.find(p => p.id === id) || productsDatabase[0];
@@ -91,7 +94,16 @@ const ProductDetails = () => {
   // Get related products
   const relatedProducts = getRelatedProducts(product.id, product.category);
 
-  const addToCart = () => {
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+      id: product.id,
+      name: product.name,
+      price: Number(product.price) || 0,
+      quantity: quantity,
+      image: product.image,
+      description: product.description
+    }));
+    
     toast({
       title: "Added to cart",
       description: `${quantity} × ${product.name} added to your cart`,
@@ -210,9 +222,9 @@ const ProductDetails = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button 
                   className="flex-1 bg-black hover:bg-gray-800 text-white"
-                  onClick={addToCart}
+                  onClick={handleAddToCart}
                 >
-                  <ShoppingCart size={18} />
+                  <ShoppingCart size={18} className="mr-2" />
                   Add to cart
                 </Button>
                 <Button 
@@ -220,7 +232,7 @@ const ProductDetails = () => {
                   className="flex-1"
                   onClick={addToWishlist}
                 >
-                  <Heart size={18} />
+                  <Heart size={18} className="mr-2" />
                   Add to wishlist
                 </Button>
               </div>

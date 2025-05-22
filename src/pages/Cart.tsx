@@ -1,23 +1,18 @@
-
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Trash2, Plus, Minus } from "lucide-react";
+import { Trash2, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getCartItems, removeFromCart, updateQuantity } from "@/redux/features/cart/cartSlice";
+import { removeFromCart, updateQuantity } from "@/redux/features/cart/cartSlice";
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { items: cartItems, isLoading, error } = useAppSelector(state => state.cart);
+  const { items: cartItems } = useAppSelector(state => state.cart);
   const shipping = 0; // Free shipping
   const discount = 0;
-
-  useEffect(() => {
-    dispatch(getCartItems());
-  }, [dispatch]);
 
   const calculateSubtotal = (items: any[]) => {
     return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -34,14 +29,6 @@ const Cart = () => {
       dispatch(removeFromCart(itemId));
     }
   };
-
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading cart...</div>;
-  }
-
-  if (error) {
-    return <div className="min-h-screen flex items-center justify-center">Error loading cart: {error}</div>;
-  }
 
   const subtotal = calculateSubtotal(cartItems);
   const total = subtotal + shipping - discount;
@@ -106,7 +93,7 @@ const Cart = () => {
                               className="px-3 py-1 border-r"
                               onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                             >
-                              -
+                              <Minus className="h-3 w-3" />
                             </button>
                             <input 
                               type="text" 
@@ -118,7 +105,7 @@ const Cart = () => {
                               className="px-3 py-1 border-l"
                               onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                             >
-                              +
+                              <Plus className="h-3 w-3" />
                             </button>
                           </div>
                         </td>

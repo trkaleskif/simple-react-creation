@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { X, Minus, Plus } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
