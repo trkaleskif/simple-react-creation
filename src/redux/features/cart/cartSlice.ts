@@ -36,19 +36,11 @@ export const getCartItems = createAsyncThunk(
       const items: CartItem[] = [
         {
           id: '1',
-          name: 'Modern Chair',
-          price: 199.00,
+          name: 'Wall Object Lips 30cm',
+          price: 3800,
           quantity: 1,
           image: '/placeholder.svg',
-          description: 'Comfortable modern chair'
-        },
-        {
-          id: '2',
-          name: 'Minimal Desk',
-          price: 349.00,
-          quantity: 2,
-          image: '/placeholder.svg',
-          description: 'Sleek minimal desk'
+          description: 'Wall decoration object'
         }
       ];
       

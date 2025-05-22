@@ -1,7 +1,7 @@
 
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, ArrowRight } from "lucide-react";
+import { ArrowRight, Trash2, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -12,16 +12,15 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { items: cartItems, isLoading, error } = useAppSelector(state => state.cart);
-  const shipping = 5;
+  const shipping = 0; // Free shipping
   const discount = 0;
 
   useEffect(() => {
     dispatch(getCartItems());
   }, [dispatch]);
 
-  const calculateTotal = (items: any[]) => {
-    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    return total;
+  const calculateSubtotal = (items: any[]) => {
+    return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   };
 
   const handleRemoveItem = (itemId: string) => {
@@ -37,137 +36,151 @@ const Cart = () => {
   };
 
   if (isLoading) {
-    return <div>Loading cart...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Loading cart...</div>;
   }
 
   if (error) {
-    return <div>Error loading cart: {error}</div>;
+    return <div className="min-h-screen flex items-center justify-center">Error loading cart: {error}</div>;
   }
 
+  const subtotal = calculateSubtotal(cartItems);
+  const total = subtotal + shipping - discount;
+
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
       
       <main className="flex-1 pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-6xl">
-          <h1 className="text-3xl font-light tracking-tight mb-8">Shopping Cart</h1>
+          <div className="flex items-center justify-center mb-8 space-x-3">
+            <span className="text-black font-medium underline">SHOPPING CART</span>
+            <span className="text-gray-400">→</span>
+            <span className="text-gray-400">CHECKOUT</span>
+            <span className="text-gray-400">→</span>
+            <span className="text-gray-400">ORDER COMPLETE</span>
+          </div>
           
           {cartItems.length > 0 ? (
-            <div className="flex flex-col lg:flex-row gap-8">
-              <div className="flex-1">
-                <div className="border rounded-md overflow-hidden">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 text-left">
-                      <tr>
-                        <th className="px-6 py-4 text-sm font-medium text-gray-500">Product</th>
-                        <th className="px-6 py-4 text-sm font-medium text-gray-500">Quantity</th>
-                        <th className="px-6 py-4 text-sm font-medium text-gray-500 text-right">Price</th>
-                        <th className="px-6 py-4 text-sm font-medium text-gray-500 text-right">Total</th>
-                        <th className="px-6 py-4 sr-only">Actions</th>
+            <div className="bg-white p-6">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-4 font-medium text-gray-500">PRODUCT</th>
+                      <th className="text-left py-4 font-medium text-gray-500">PRICE</th>
+                      <th className="text-left py-4 font-medium text-gray-500">QUANTITY</th>
+                      <th className="text-right py-4 font-medium text-gray-500">SUBTOTAL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cartItems.map(item => (
+                      <tr key={item.id} className="border-b">
+                        <td className="py-4">
+                          <div className="flex items-center">
+                            <button 
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="mr-4 text-gray-400 hover:text-gray-600"
+                            >
+                              <span className="text-xl">×</span>
+                            </button>
+                            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="h-full w-full object-cover object-center"
+                              />
+                            </div>
+                            <div className="ml-4">
+                              <Link to={`/product/${item.id}`} className="font-medium text-gray-900 hover:text-gray-600">
+                                {item.name}
+                              </Link>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4">
+                          <div className="text-gray-900">{item.price} ден</div>
+                        </td>
+                        <td className="py-4">
+                          <div className="flex items-center border rounded max-w-[120px]">
+                            <button 
+                              className="px-3 py-1 border-r"
+                              onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                            >
+                              -
+                            </button>
+                            <input 
+                              type="text" 
+                              value={item.quantity}
+                              readOnly
+                              className="w-10 px-2 py-1 text-center outline-none"
+                            />
+                            <button 
+                              className="px-3 py-1 border-l"
+                              onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </td>
+                        <td className="py-4 text-right">
+                          <div className="text-gray-900 font-medium">{(item.price * item.quantity)} ден</div>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y">
-                      {cartItems.map(item => (
-                        <tr key={item.id}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                <img
-                                  src={item.image}
-                                  alt={item.name}
-                                  className="h-full w-full object-cover object-center"
-                                />
-                              </div>
-                              <div className="ml-4">
-                                <Link to={`/product/${item.id}`} className="font-medium text-gray-900 hover:text-gray-600">
-                                  {item.name}
-                                </Link>
-                                <p className="text-gray-500 text-sm">{item.description}</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <button 
-                                className="text-gray-500 hover:text-gray-700 p-1"
-                                onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                              >
-                                -
-                              </button>
-                              <div className="mx-2 text-sm text-gray-500">{item.quantity}</div>
-                              <button 
-                                className="text-gray-500 hover:text-gray-700 p-1"
-                                onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                              >
-                                +
-                              </button>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 text-right whitespace-nowrap">
-                            <div className="text-sm text-gray-500">€{item.price.toFixed(2)}</div>
-                          </td>
-                          <td className="px-6 py-4 text-right whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">€{(item.price * item.quantity).toFixed(2)}</div>
-                          </td>
-                          <td className="px-6 py-4 text-right whitespace-nowrap">
-                            <div className="relative inline-flex">
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveItem(item.id)}
-                                className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-md text-xs font-semibold text-gray-500 hover:bg-gray-100"
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              
-              <div className="w-full lg:w-96">
-                <div className="bg-gray-50 rounded-md p-6">
-                  <h2 className="text-xl font-medium mb-4">Order Summary</h2>
-                  
-                  <div className="space-y-3 mb-6">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span>€{calculateTotal(cartItems).toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Shipping</span>
-                      <span>{shipping > 0 ? `€${shipping.toFixed(2)}` : 'Free'}</span>
-                    </div>
-                    {discount > 0 && (
-                      <div className="flex justify-between text-sm text-green-600">
-                        <span>Discount</span>
-                        <span>-€{discount.toFixed(2)}</span>
+
+              <div className="flex flex-col md:flex-row justify-between mt-8 gap-6">
+                <div className="md:w-1/2 max-w-md">
+                  <div className="flex border">
+                    <input 
+                      type="text" 
+                      placeholder="Coupon code" 
+                      className="flex-grow px-4 py-2 outline-none"
+                    />
+                    <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 uppercase text-sm font-medium">
+                      Apply coupon
+                    </button>
+                  </div>
+                </div>
+                <div className="md:w-1/2 max-w-md ml-auto">
+                  <div className="border p-6">
+                    <h3 className="text-lg font-medium mb-4">CART TOTALS</h3>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex justify-between border-b pb-3">
+                        <span>Subtotal</span>
+                        <span>{subtotal} ден</span>
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="border-t pt-4 mb-6">
-                    <div className="flex justify-between font-medium">
-                      <span>Total</span>
-                      <span className="text-xl">€{(calculateTotal(cartItems) + shipping - discount).toFixed(2)}</span>
+                      <div className="flex justify-between border-b pb-3">
+                        <span>Shipping</span>
+                        <span className="text-right">
+                          {shipping === 0 ? (
+                            <button className="text-black underline">Calculate shipping</button>
+                          ) : (
+                            `${shipping} ден`
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex justify-between pt-2 font-medium">
+                        <span>Total</span>
+                        <span>{total} ден</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">Including VAT</p>
+                    
+                    <Button 
+                      onClick={() => navigate('/checkout')}
+                      className="w-full bg-green-500 hover:bg-green-600 text-white"
+                    >
+                      PROCEED TO CHECKOUT
+                    </Button>
                   </div>
-                  
-                  <Button 
-                    onClick={() => navigate('/checkout')}
-                    className="w-full bg-black text-white hover:bg-gray-800"
-                  >
-                    Proceed to Checkout <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-16">
-              <ShoppingCart className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+            <div className="text-center py-16 bg-white">
               <h2 className="text-2xl font-medium mb-2">Your cart is empty</h2>
               <p className="text-gray-500 mb-8">Browse our products to add items to your cart</p>
               <Button 

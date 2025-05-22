@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { Menu, X, LogIn, UserPlus, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { toggleCart } from '@/redux/features/cart/cartSlice';
+import { Badge } from '@/components/ui/badge';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,9 +63,11 @@ const Navbar = () => {
           >
             <ShoppingCart size={18} className="mr-1" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <Badge 
+                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
+              >
                 {totalItems}
-              </span>
+              </Badge>
             )}
           </button>
           <button 
@@ -84,9 +88,11 @@ const Navbar = () => {
           >
             <ShoppingCart size={20} />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <Badge 
+                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
+              >
                 {totalItems}
-              </span>
+              </Badge>
             )}
           </button>
           <button
