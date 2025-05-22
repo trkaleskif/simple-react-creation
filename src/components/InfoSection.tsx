@@ -25,42 +25,42 @@ const InfoSection = () => {
   ];
 
   return (
-    <section id="information" className="py-16 lg:py-28">
+    <section id="information" className="py-12 lg:py-28">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <div className="grid grid-cols-3 gap-3 md:gap-6">
             {catalogues.map((catalogue) => (
               <div key={catalogue.id} className="flex flex-col">
-                <div className={`aspect-[3/4] ${catalogue.color} mb-4 relative group overflow-hidden`}>
+                <div className={`aspect-[3/4] ${catalogue.color} mb-3 md:mb-4 relative group overflow-hidden`}>
                   <img 
                     src={catalogue.image}
                     alt={catalogue.title}
                     className="w-full h-full object-cover opacity-0"
                   />
-                  <div className="absolute bottom-6 left-6">
+                  <div className="absolute bottom-2 md:bottom-6 left-2 md:left-6">
                     <img 
                       src="/placeholder.svg"
                       alt="xfimet logo" 
-                      className="h-4 w-auto"
+                      className="h-3 md:h-4 w-auto"
                     />
                   </div>
                 </div>
-                <h3 className="text-lg font-medium">{catalogue.title}</h3>
+                <h3 className="text-sm md:text-lg font-medium">{catalogue.title}</h3>
               </div>
             ))}
           </div>
 
           <div className="flex flex-col justify-center">
-            <div className="mb-2 text-sm uppercase tracking-wider text-gray-500">
+            <div className="mb-2 text-xs md:text-sm uppercase tracking-wider text-gray-500">
               CATALOGS AND BROCHURES
             </div>
-            <h2 className="section-title">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-light mb-10 md:mb-20">
               Information,<br />details and<br />inspiration
             </h2>
-            <div className="mt-20">
+            <div>
               <Link 
                 to="/catalogues" 
-                className="inline-flex items-center space-x-2 border border-gray-300 px-6 py-3 hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center space-x-2 border border-gray-300 px-4 py-2 md:px-6 md:py-3 hover:bg-gray-100 transition-colors text-sm"
               >
                 <span>CHECK OUT ALL THE CATALOGS</span>
                 <ArrowRight size={16} />

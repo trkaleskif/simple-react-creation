@@ -89,4 +89,23 @@
   .fancy-hover-effect:hover::after {
     @apply w-full;
   }
+
+  /* Mobile-specific styles */
+  @media (max-width: 767px) {
+    .section-title {
+      @apply text-2xl mb-4;
+    }
+    
+    .section-subtitle {
+      @apply text-lg mb-8;
+    }
+    
+    .mobile-container {
+      @apply px-4;
+    }
+    
+    .mobile-section {
+      @apply py-12;
+    }
+  }
 }

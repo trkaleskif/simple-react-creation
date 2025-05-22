@@ -33,7 +33,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[85vh] md:h-screen overflow-hidden">
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div 
@@ -54,12 +54,12 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent" />
       
       <div className="relative h-full container mx-auto flex flex-col justify-center">
-        <div className="w-full md:w-1/2 lg:w-2/5 px-4 md:px-0 pt-24 md:pt-0">
-          <span className="block text-sm tracking-widest mb-4 text-charcoal">{slides[currentSlide].subtitle}</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-6">
+        <div className="w-full md:w-1/2 lg:w-2/5 px-4 md:px-0 pt-16 md:pt-0">
+          <span className="block text-xs md:text-sm tracking-widest mb-2 md:mb-4 text-charcoal">{slides[currentSlide].subtitle}</span>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-4 md:mb-6">
             {slides[currentSlide].title}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-md mb-8">
+          <p className="text-base md:text-lg text-muted-foreground max-w-md mb-6 md:mb-8">
             {slides[currentSlide].description}
           </p>
           <a 
@@ -71,7 +71,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Process circle button - top right */}
+      {/* Process circle button - top right - hidden on mobile */}
       <button 
         onClick={goToNextSlide}
         className="absolute top-32 right-12 md:top-40 md:right-32 hidden md:flex items-center justify-center w-32 h-32 rounded-full border border-charcoal/20 group hover:border-charcoal/40 transition-all duration-300"
@@ -86,7 +86,7 @@ const HeroSection = () => {
         </div>
       </button>
       
-      {/* Scroll down - bottom left */}
+      {/* Scroll down - bottom left - hidden on mobile */}
       <div className="absolute bottom-10 left-10 md:left-24 hidden md:flex items-center justify-center w-32 h-32 rounded-full border border-charcoal/20">
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-xs tracking-widest opacity-50 rotate-[30deg] transform origin-center">
@@ -98,16 +98,16 @@ const HeroSection = () => {
         </a>
       </div>
       
-      {/* Next slide arrow - bottom right */}
+      {/* Next slide arrow - bottom right - compact version on mobile */}
       <button 
         onClick={goToNextSlide}
-        className="absolute bottom-10 right-10 md:right-24 flex items-center justify-center w-12 h-12"
+        className="absolute bottom-10 right-6 md:right-24 flex items-center justify-center w-8 h-8 md:w-12 md:h-12"
       >
-        <ArrowRight size={24} className="opacity-70 hover:opacity-100 transition-opacity" />
+        <ArrowRight size={20} className="opacity-70 hover:opacity-100 transition-opacity" />
       </button>
       
       {/* Secret banner at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 bg-charcoal text-white py-2 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 bg-charcoal text-white py-1 md:py-2 overflow-hidden">
         <div className="animate-marquee whitespace-nowrap">
           <span className="mx-4">SECRET: the invisible closure that enhances architecture</span>
           <span className="mx-4">•</span>

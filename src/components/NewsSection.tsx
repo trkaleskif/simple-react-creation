@@ -25,21 +25,21 @@ const NewsSection = () => {
   ];
 
   return (
-    <section id="news" className="py-16 lg:py-24 bg-cream">
+    <section id="news" className="py-12 lg:py-24 bg-cream">
       <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-          <h2 className="text-3xl font-light">News, events and new products</h2>
-          <Link to="/events" className="inline-flex items-center space-x-2 mt-4 md:mt-0">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-light mb-4 md:mb-0">News, events and new products</h2>
+          <Link to="/events" className="inline-flex items-center space-x-2">
             <span>View all news</span>
             <ArrowRight size={16} />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {news.map((item, index) => (
               <div key={index} className="group">
-                <div className="aspect-video overflow-hidden mb-4">
+                <div className="aspect-video overflow-hidden mb-3 md:mb-4">
                   <img 
                     src={item.image} 
                     alt={item.title} 
@@ -47,7 +47,7 @@ const NewsSection = () => {
                   />
                 </div>
                 <span className="text-xs text-muted-foreground">{item.category}</span>
-                <h3 className="text-xl font-light hover:text-charcoal transition-colors">
+                <h3 className="text-lg md:text-xl font-light hover:text-charcoal transition-colors">
                   <Link to={`/event/${item.id}`}>{item.title}</Link>
                 </h3>
                 <Link to={`/event/${item.id}`} className="text-sm fancy-hover-effect inline-block mt-2">Read more</Link>
@@ -57,11 +57,11 @@ const NewsSection = () => {
           
           <div className="flex flex-col">
             <h3 className="text-xl font-light mb-6">Recent highlights</h3>
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-col space-y-5 md:space-y-6">
               {recentNews.map((item, index) => (
-                <div key={index} className="border-t border-gray-300 pt-6">
+                <div key={index} className="border-t border-gray-300 pt-4 md:pt-6">
                   <Link to={`/event/${item.id}`} className="group">
-                    <h4 className="text-lg font-light group-hover:text-charcoal transition-colors">
+                    <h4 className="text-base md:text-lg font-light group-hover:text-charcoal transition-colors">
                       {item.title}
                     </h4>
                     <div className="flex items-center space-x-2 mt-2">
