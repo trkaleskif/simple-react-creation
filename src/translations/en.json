@@ -1,0 +1,94 @@
+
+{
+  "navbar": {
+    "catalog": "Catalog",
+    "events": "Events",
+    "contact": "Contact",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "menu": "Menu",
+    "cart": "Cart"
+  },
+  "hero": {
+    "subtitle1": "AFFORDABLE DESIGN HANDLES",
+    "title1": "Italian passion, research and technique",
+    "description1": "Design and manufacture of handles in stainless steel, brass and aluminum, with the ability to customize shape and color.",
+    "subtitle2": "PREMIUM CRAFTSMANSHIP",
+    "title2": "Where form meets function",
+    "description2": "Each piece is carefully crafted with attention to detail and precision engineering for a perfect balance of aesthetics and usability.",
+    "explore": "Explore our products",
+    "process": "HOW SUSTAINABILITY IS INTEGRATED INTO OUR PROCESS",
+    "scroll": "SCROLL AND FIND OUT MORE",
+    "secret": "SECRET: the invisible closure that enhances architecture"
+  },
+  "products": {
+    "title": "Shape, material, technique and color",
+    "description": "Every product is the result of meticulous research and Italian craftsmanship, creating a perfect blend of form and function.",
+    "viewAll": "View all products",
+    "doorHardware": "Door hardware",
+    "doorHardwareDesc": "Elegant and functional door handles crafted with precision",
+    "bathroomAccessories": "Bathroom accessories",
+    "bathroomAccessoriesDesc": "Carefully designed elements for a sophisticated bathroom",
+    "discoverMore": "Discover more"
+  },
+  "projects": {
+    "title": "Your vision, our possibilities",
+    "subtitle": "Creating a product that reflects your project, considering space & design"
+  },
+  "info": {
+    "catalogsTitle": "CATALOGS AND BROCHURES",
+    "title": "Information, details and inspiration",
+    "checkCatalogs": "CHECK OUT ALL THE CATALOGS"
+  },
+  "news": {
+    "title": "News, events and new products",
+    "viewAll": "View all news",
+    "highlights": "Recent highlights",
+    "readMore": "Read more"
+  },
+  "contact": {
+    "title": "Contact us",
+    "description": "For more information or to define your project together.",
+    "contactButton": "Contact us for more information",
+    "newsletterTitle": "SIGN UP FOR NEWSLETTER",
+    "newsletterSubtitle": "A look at the world of Fimet",
+    "newsletterDescription": "Periodic updates on products, innovations, new collections and major industry events.",
+    "emailPlaceholder": "Your e-mail address",
+    "signUp": "SIGN UP",
+    "consent": "I consent to the processing of data as per the",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "footer": {
+    "address": {
+      "line1": "Via Milano 123",
+      "line2": "20123 Milano MI",
+      "line3": "Italy"
+    },
+    "products": "Products",
+    "productItems": {
+      "doorHandles": "Door Handles",
+      "bathroom": "Bathroom",
+      "finishes": "Finishes",
+      "custom": "Custom"
+    },
+    "company": "Company",
+    "companyItems": {
+      "aboutUs": "About us",
+      "projects": "Projects",
+      "showrooms": "Showrooms",
+      "contact": "Contact"
+    },
+    "resources": "Resources",
+    "resourceItems": {
+      "downloads": "Downloads",
+      "catalogues": "Catalogues",
+      "installation": "Installation",
+      "maintenance": "Maintenance"
+    },
+    "rights": "All rights reserved.",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies"
+  },
+  "language": "Language"
+}

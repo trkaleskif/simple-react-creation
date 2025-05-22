@@ -1,10 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X, LogIn, UserPlus, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { toggleCart } from '@/redux/features/cart/cartSlice';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector(state => state.cart.items);
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,21 +49,22 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/catalog" className="hover:text-charcoal fancy-hover-effect">Catalog</Link>
-          <Link to="/events" className="hover:text-charcoal fancy-hover-effect">Events</Link>
-          <Link to="/contact" className="hover:text-charcoal fancy-hover-effect">Contact</Link>
+          <Link to="/catalog" className="hover:text-charcoal fancy-hover-effect">{t('navbar.catalog')}</Link>
+          <Link to="/events" className="hover:text-charcoal fancy-hover-effect">{t('navbar.events')}</Link>
+          <Link to="/contact" className="hover:text-charcoal fancy-hover-effect">{t('navbar.contact')}</Link>
           <Link to="/signin" className="hover:text-charcoal fancy-hover-effect flex items-center">
-            <LogIn size={18} className="mr-1" /> Sign In
+            <LogIn size={18} className="mr-1" /> {t('navbar.signin')}
           </Link>
           <Link to="/signup" className="hover:text-charcoal fancy-hover-effect flex items-center">
-            <UserPlus size={18} className="mr-1" /> Sign Up
+            <UserPlus size={18} className="mr-1" /> {t('navbar.signup')}
           </Link>
+          <LanguageSwitcher />
           <button 
             onClick={handleCartClick}
             className="relative hover:text-charcoal fancy-hover-effect flex items-center"
             aria-label="Cart"
           >
-            <ShoppingCart size={18} className="mr-1" />
+            <ShoppingCart size={18} className="mr-1" /> {t('navbar.cart')}
             {totalItems > 0 && (
               <Badge 
                 className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs rounded-full"
@@ -75,15 +78,16 @@ const Navbar = () => {
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            Menu
+            {t('navbar.menu')}
           </button>
         </nav>
 
         {/* Mobile Navigation Toggle */}
         <div className="md:hidden flex items-center">
+          <LanguageSwitcher />
           <button 
             onClick={handleCartClick}
-            className="relative hover:text-charcoal mr-4"
+            className="relative hover:text-charcoal mr-4 ml-4"
             aria-label="Cart"
           >
             <ShoppingCart size={20} />

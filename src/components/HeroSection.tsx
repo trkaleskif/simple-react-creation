@@ -1,22 +1,24 @@
 
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const HeroSection = () => {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   
   const slides = [
     {
       image: "https://images.unsplash.com/photo-1617104551722-3b2d51366400?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      subtitle: "AFFORDABLE DESIGN HANDLES",
-      title: "Italian passion, research and technique",
-      description: "Design and manufacture of handles in stainless steel, brass and aluminum, with the ability to customize shape and color."
+      subtitle: t('hero.subtitle1'),
+      title: t('hero.title1'),
+      description: t('hero.description1')
     },
     {
       image: "https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      subtitle: "PREMIUM CRAFTSMANSHIP",
-      title: "Where form meets function",
-      description: "Each piece is carefully crafted with attention to detail and precision engineering for a perfect balance of aesthetics and usability."
+      subtitle: t('hero.subtitle2'),
+      title: t('hero.title2'),
+      description: t('hero.description2')
     }
   ];
 
@@ -66,7 +68,7 @@ const HeroSection = () => {
             href="#products" 
             className="inline-flex items-center space-x-2 fancy-hover-effect w-fit"
           >
-            <span>Explore our products</span>
+            <span>{t('hero.explore')}</span>
           </a>
         </div>
       </div>
@@ -78,7 +80,7 @@ const HeroSection = () => {
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-xs tracking-widest opacity-50 rotate-[-30deg] transform origin-center">
-            HOW SUSTAINABILITY IS INTEGRATED INTO OUR PROCESS
+            {t('hero.process')}
           </span>
         </div>
         <div className="absolute right-11 flex items-center justify-center">
@@ -90,7 +92,7 @@ const HeroSection = () => {
       <div className="absolute bottom-10 left-10 md:left-24 hidden md:flex items-center justify-center w-32 h-32 rounded-full border border-charcoal/20">
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-xs tracking-widest opacity-50 rotate-[30deg] transform origin-center">
-            SCROLL AND FIND OUT MORE
+            {t('hero.scroll')}
           </span>
         </div>
         <a href="#products" className="absolute bottom-11 flex items-center justify-center">
@@ -109,13 +111,13 @@ const HeroSection = () => {
       {/* Secret banner at bottom */}
       <div className="absolute bottom-0 left-0 right-0 bg-charcoal text-white py-1 md:py-2 overflow-hidden">
         <div className="animate-marquee whitespace-nowrap">
-          <span className="mx-4">SECRET: the invisible closure that enhances architecture</span>
+          <span className="mx-4">{t('hero.secret')}</span>
           <span className="mx-4">•</span>
-          <span className="mx-4">SECRET: the invisible closure that enhances architecture</span>
+          <span className="mx-4">{t('hero.secret')}</span>
           <span className="mx-4">•</span>
-          <span className="mx-4">SECRET: the invisible closure that enhances architecture</span>
+          <span className="mx-4">{t('hero.secret')}</span>
           <span className="mx-4">•</span>
-          <span className="mx-4">SECRET: the invisible closure that enhances architecture</span>
+          <span className="mx-4">{t('hero.secret')}</span>
         </div>
       </div>
     </section>

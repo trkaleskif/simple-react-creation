@@ -7,21 +7,24 @@ import InfoSection from "@/components/InfoSection";
 import NewsSection from "@/components/NewsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
-      <div className="space-y-0 md:space-y-2">
-        <ProductsSection />
-        <ProjectsSection />
-        <InfoSection />
-        <NewsSection />
-        <ContactSection />
+    <LanguageProvider>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <HeroSection />
+        <div className="space-y-0 md:space-y-2">
+          <ProductsSection />
+          <ProjectsSection />
+          <InfoSection />
+          <NewsSection />
+          <ContactSection />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </LanguageProvider>
   );
 };
 

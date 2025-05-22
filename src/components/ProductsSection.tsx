@@ -1,8 +1,11 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ProductsSection = () => {
+  const { t } = useTranslation();
+  
   return (
     <section id="products" className="py-12 lg:py-32 bg-cream">
       <div className="container mx-auto">
@@ -18,35 +21,35 @@ const ProductsSection = () => {
           <div className="flex flex-col lg:pl-12">
             <div className="mb-8 lg:mb-12">
               <h2 className="section-title">
-                Shape, material, technique and color
+                {t('products.title')}
               </h2>
               <p className="text-muted-foreground mb-6">
-                Every product is the result of meticulous research and Italian craftsmanship, creating a perfect blend of form and function.
+                {t('products.description')}
               </p>
               <Link to="/catalog" className="inline-flex items-center space-x-2 btn-outline mt-4">
-                <span>View all products</span>
+                <span>{t('products.viewAll')}</span>
                 <ArrowRight size={16} />
               </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
               <div>
-                <h3 className="text-lg lg:text-xl font-medium mb-2">Door hardware</h3>
+                <h3 className="text-lg lg:text-xl font-medium mb-2">{t('products.doorHardware')}</h3>
                 <p className="text-sm text-muted-foreground mb-3 lg:mb-4">
-                  Elegant and functional door handles crafted with precision
+                  {t('products.doorHardwareDesc')}
                 </p>
                 <Link to="/catalog" className="text-sm fancy-hover-effect inline-block">
-                  Discover more
+                  {t('products.discoverMore')}
                 </Link>
               </div>
               
               <div>
-                <h3 className="text-lg lg:text-xl font-medium mb-2">Bathroom accessories</h3>
+                <h3 className="text-lg lg:text-xl font-medium mb-2">{t('products.bathroomAccessories')}</h3>
                 <p className="text-sm text-muted-foreground mb-3 lg:mb-4">
-                  Carefully designed elements for a sophisticated bathroom
+                  {t('products.bathroomAccessoriesDesc')}
                 </p>
                 <Link to="/catalog" className="text-sm fancy-hover-effect inline-block">
-                  Discover more
+                  {t('products.discoverMore')}
                 </Link>
               </div>
             </div>

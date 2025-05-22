@@ -1,5 +1,9 @@
 
+import { useTranslation } from 'react-i18next';
+
 const ProjectsSection = () => {
+  const { t } = useTranslation();
+  
   const projects = [
     {
       title: "Projects",
@@ -17,9 +21,9 @@ const ProjectsSection = () => {
     <section id="projects" className="py-12 lg:py-24">
       <div className="container mx-auto">
         <div className="text-center mb-10 lg:mb-16">
-          <h2 className="section-title">Your vision, our possibilities</h2>
+          <h2 className="section-title">{t('projects.title')}</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Creating a product that reflects your project, considering space & design
+            {t('projects.subtitle')}
           </p>
         </div>
 
