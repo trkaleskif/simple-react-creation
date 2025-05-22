@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import enTranslation from '../translations/en.json';
+import mkTranslation from '../translations/mk.json';
 
 // Define available languages
 export const languages = {
@@ -35,10 +37,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         .init({
           resources: {
             en: {
-              translation: require('../translations/en.json')
+              translation: enTranslation
             },
             mk: {
-              translation: require('../translations/mk.json')
+              translation: mkTranslation
             }
           },
           lng: language,
