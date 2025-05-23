@@ -32,7 +32,7 @@ const HeroSection = () => {
     }, 7000);
     
     return () => clearInterval(interval);
-  }, [slides.length]); // Ensure dependency array is valid
+  }, []); // Remove slides.length from dependency array to prevent re-renders
 
   const goToNextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % (slides?.length || 1));

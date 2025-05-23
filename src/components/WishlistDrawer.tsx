@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { closeWishlist, removeFromWishlist } from '@/redux/features/wishlist/wishlistSlice';
 import { addToCart } from '@/redux/features/cart/cartSlice';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { X, ShoppingCart, Trash2 } from 'lucide-react';
+import { X, ShoppingCart } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from 'react-router-dom';
@@ -11,9 +11,13 @@ import { toast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 
 const WishlistDrawer = () => {
+  // Make sure hooks are always called in the same order
+  const { t } = useTranslation();
   const { isOpen, items } = useAppSelector(state => state.wishlist);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  
+  // Initialize empty array to avoid "length" property error
+  const wishlistItems = items || [];
   
   const handleClose = () => {
     dispatch(closeWishlist());
@@ -37,9 +41,6 @@ const WishlistDrawer = () => {
       description: t("wishlist.addedToCartDesc", { name: item.name }),
     });
   };
-
-  // Initialize empty array to avoid "length" property error
-  const wishlistItems = items || [];
 
   return (
     <Sheet open={isOpen} onOpenChange={handleClose}>
