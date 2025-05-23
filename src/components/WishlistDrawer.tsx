@@ -38,19 +38,22 @@ const WishlistDrawer = () => {
     });
   };
 
+  // Initialize empty array to avoid "length" property error
+  const wishlistItems = items || [];
+
   return (
     <Sheet open={isOpen} onOpenChange={handleClose}>
       <SheetContent className="sm:max-w-md w-full">
         <SheetHeader>
           <SheetTitle className="text-xl font-medium">
-            {t("wishlist.title")} ({items.length})
+            {t("wishlist.title")} ({wishlistItems.length})
           </SheetTitle>
         </SheetHeader>
 
         <div className="mt-6 flex flex-col h-[calc(100vh-8rem)]">
-          {items.length > 0 ? (
+          {wishlistItems.length > 0 ? (
             <div className="flex-1 overflow-y-auto pr-2">
-              {items.map((item) => (
+              {wishlistItems.map((item) => (
                 <div key={item.id} className="mb-4">
                   <div className="flex gap-4">
                     <div className="w-20 h-20 bg-gray-100">
@@ -102,7 +105,7 @@ const WishlistDrawer = () => {
             </div>
           )}
           
-          {items.length > 0 && (
+          {wishlistItems.length > 0 && (
             <div className="pt-4 border-t">
               <Button asChild className="w-full">
                 <Link to="/wishlist">{t("wishlist.viewWishlist")}</Link>

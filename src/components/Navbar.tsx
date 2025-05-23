@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X, LogIn, UserPlus, ShoppingCart, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -18,7 +17,8 @@ const Navbar = () => {
   const totalCartItems = cartItems.reduce((total, item) => total + item.quantity, 0);
   
   const wishlistItems = useAppSelector(state => state.wishlist.items);
-  const totalWishlistItems = wishlistItems.length;
+  // Make sure wishlistItems is always defined
+  const totalWishlistItems = wishlistItems ? wishlistItems.length : 0;
   
   const { t } = useTranslation();
 
