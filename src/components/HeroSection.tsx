@@ -22,6 +22,7 @@ const HeroSection = () => {
     }
   ];
 
+  // Fix: Moved the slides definition above the useEffect to maintain hook order
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
