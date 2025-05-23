@@ -90,5 +90,22 @@
     "privacy": "Privacy",
     "cookies": "Cookies"
   },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty",
+    "continueShopping": "Continue shopping",
+    "viewWishlist": "View full wishlist",
+    "addToCart": "Add to cart",
+    "itemRemoved": "Item removed",
+    "itemRemovedDesc": "The item has been removed from your wishlist.",
+    "addedToCart": "Added to cart",
+    "addedToCartDesc": "{{name}} has been added to your cart.",
+    "cleared": "Wishlist cleared",
+    "clearedDesc": "All items have been removed from your wishlist.",
+    "emptyState": "Your wishlist is empty",
+    "emptyStateDesc": "Items you add to your wishlist will appear here.",
+    "startShopping": "Start shopping",
+    "clearAll": "Clear all"
+  },
   "language": "Language"
 }

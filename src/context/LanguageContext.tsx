@@ -1,10 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import enTranslation from '../translations/en.json';
-import mkTranslation from '../translations/mk.json';
+import i18n from '../i18n';
 
 // Define available languages
 export const languages = {
@@ -29,28 +25,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    // Initialize i18n once when component mounts
-    if (!i18n.isInitialized) {
-      i18n
-        .use(LanguageDetector)
-        .use(initReactI18next)
-        .init({
-          resources: {
-            en: {
-              translation: enTranslation
-            },
-            mk: {
-              translation: mkTranslation
-            }
-          },
-          lng: language,
-          fallbackLng: 'en',
-          interpolation: {
-            escapeValue: false // React already escapes values
-          }
-        });
-    }
-
     // Ensure the language is set correctly on initial load
     if (i18n.language !== language) {
       changeLanguage(language);
