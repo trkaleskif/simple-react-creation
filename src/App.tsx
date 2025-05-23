@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import CartDrawer from "./components/CartDrawer";
 import WishlistDrawer from "./components/WishlistDrawer";
+import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Catalog from "./pages/Catalog";
 import Catalogues from "./pages/Catalogues";
@@ -35,6 +36,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <CartDrawer />
             <WishlistDrawer />
             <Routes>

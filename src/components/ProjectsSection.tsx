@@ -1,10 +1,19 @@
 
 import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
+import useApi from '@/hooks/useApi';
+
+interface Project {
+  title: string;
+  description: string;
+  image: string;
+}
 
 const ProjectsSection = () => {
   const { t } = useTranslation();
   
-  const projects = [
+  // Mock data that will be replaced by API data
+  const mockProjects = [
     {
       title: "Projects",
       description: "Discover our collaborations with architects and designers",
@@ -17,6 +26,16 @@ const ProjectsSection = () => {
     }
   ];
 
+  // This would fetch from API in production
+  const { data, isLoading } = useApi<Project[]>({
+    endpoint: '/api/projects',
+    initialData: mockProjects,
+    dependencies: [t]
+  });
+
+  // Memoize projects to avoid unnecessary re-renders
+  const projects = useMemo(() => data || [], [data]);
+
   return (
     <section id="projects" className="py-12 lg:py-24">
       <div className="container mx-auto">
@@ -28,25 +47,34 @@ const ProjectsSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {projects.map((project, index) => (
-            <div 
-              key={index}
-              className="group relative h-[40vh] md:h-[50vh] overflow-hidden bg-cream"
-            >
-              <img 
-                src={project.image} 
-                alt={project.title} 
-                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end p-4 sm:p-6 md:p-8 transition-all duration-300 group-hover:bg-opacity-30">
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-light text-white mb-1 md:mb-2">
-                    {project.title}
-                  </h3>
+          {isLoading ? (
+            Array(2).fill(0).map((_, index) => (
+              <div 
+                key={index}
+                className="h-[40vh] md:h-[50vh] bg-gray-200 animate-pulse"
+              ></div>
+            ))
+          ) : (
+            projects.map((project, index) => (
+              <div 
+                key={index}
+                className="group relative h-[40vh] md:h-[50vh] overflow-hidden bg-cream"
+              >
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end p-4 sm:p-6 md:p-8 transition-all duration-300 group-hover:bg-opacity-30">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-light text-white mb-1 md:mb-2">
+                      {project.title}
+                    </h3>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>
