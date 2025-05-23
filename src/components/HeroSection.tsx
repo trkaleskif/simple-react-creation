@@ -7,6 +7,7 @@ const HeroSection = () => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   
+  // Define slides before any hooks that depend on it
   const slides = [
     {
       image: "https://images.unsplash.com/photo-1617104551722-3b2d51366400?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
@@ -22,17 +23,19 @@ const HeroSection = () => {
     }
   ];
 
-  // Fix: Moved the slides definition above the useEffect to maintain hook order
   useEffect(() => {
+    // Make sure we use a safe reference to slides.length
+    const slidesCount = slides?.length || 0;
+    
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % slidesCount);
     }, 7000);
     
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, [slides.length]); // Ensure dependency array is valid
 
   const goToNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setCurrentSlide((prev) => (prev + 1) % (slides?.length || 1));
   };
 
   return (
