@@ -1,14 +1,15 @@
 
 import { ArrowDown, ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const HeroSection = () => {
+  // Call all hooks at the top level, before any conditional logic
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Define slides before any hooks that depend on it
-  const slides = [
+  // Use useMemo to define slides to prevent recreation on each render
+  const slides = useMemo(() => [
     {
       image: "https://images.unsplash.com/photo-1617104551722-3b2d51366400?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
       subtitle: t('hero.subtitle1'),
@@ -21,21 +22,18 @@ const HeroSection = () => {
       title: t('hero.title2'),
       description: t('hero.description2')
     }
-  ];
+  ], [t]); // Add t as dependency to recreate slides when language changes
 
   useEffect(() => {
-    // Make sure we use a safe reference to slides.length
-    const slidesCount = slides?.length || 0;
-    
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slidesCount);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 7000);
     
     return () => clearInterval(interval);
-  }, []); // Remove slides.length from dependency array to prevent re-renders
+  }, [slides]); // Now safely include slides as a dependency since it's memoized
 
   const goToNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % (slides?.length || 1));
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   return (
