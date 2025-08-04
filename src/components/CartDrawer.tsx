@@ -48,13 +48,7 @@ const CartDrawer = () => {
     <Sheet open={isOpen} onOpenChange={handleCloseCart}>
       <SheetContent className="w-[400px] sm:max-w-md">
         <SheetHeader className="border-b pb-4">
-          <div className="flex items-center justify-between">
-            <SheetTitle>Shopping cart</SheetTitle>
-            <SheetClose className="rounded-full hover:bg-slate-100 p-2">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </SheetClose>
-          </div>
+          <SheetTitle>Shopping cart</SheetTitle>
         </SheetHeader>
 
         <div className="flex flex-col h-[calc(100vh-10rem)]">
