@@ -24,15 +24,17 @@ import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./context/LanguageContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 import './i18n'; // Make sure i18n is imported here as well
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <TooltipProvider>
+  <ErrorBoundary>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <LanguageProvider>
+          <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -60,6 +62,7 @@ const App = () => (
       </LanguageProvider>
     </QueryClientProvider>
   </Provider>
+  </ErrorBoundary>
 );
 
 export default App;
