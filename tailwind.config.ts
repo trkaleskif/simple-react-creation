@@ -53,10 +53,10 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-        cream: "#f5f2ee",
-        sand: "#e2d1c3",
-        charcoal: "#333333",
-        ebony: "#222222",
+        cream: "hsl(var(--cream))",
+        sand: "hsl(var(--sand))",
+        charcoal: "hsl(var(--charcoal))",
+        ebony: "hsl(var(--ebony))",
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

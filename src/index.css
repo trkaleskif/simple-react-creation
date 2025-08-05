@@ -35,6 +35,12 @@
     --input: 20 10% 85%;
     --ring: 20 10% 50%;
 
+    /* Custom brand colors */
+    --cream: 43 26% 94%;
+    --sand: 27 26% 82%;
+    --charcoal: 0 0% 20%;
+    --ebony: 0 0% 13%;
+
     --radius: 0;
   }
 }
